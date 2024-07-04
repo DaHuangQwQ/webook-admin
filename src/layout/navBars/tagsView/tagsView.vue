@@ -23,7 +23,7 @@
             <SvgIcon
                 name="ele-RefreshRight"
                 class="ml5 layout-navbars-tagsview-ul-li-refresh"
-                @click.stop="refreshCurrentTagsView($route.fullPath)"
+                @click.stop="refreshCurrentTagsView(getThemeConfig.isShareTagsView ? v.path : v.url)"
             />
             <SvgIcon
                 name="ele-Close"
@@ -367,7 +367,7 @@ export default defineComponent({
           // 刷新当前
           if (meta.isDynamic) await router.push({ name, params });
           else await router.push({ path, query });
-          refreshCurrentTagsView(route.fullPath);
+          refreshCurrentTagsView(getThemeConfig.value.isShareTagsView ? path : url);
           break;
         case 1:
           // 关闭当前
