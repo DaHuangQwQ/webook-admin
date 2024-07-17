@@ -5,6 +5,7 @@
   "author": "lyt_20201208",
   "license": "MIT",
   "scripts": {
+    "remote": "./shell.sh",
     "dev": "vite --force",
     "build": "vite build",
     "lint-fix": "eslint --fix --ext .js --ext .jsx --ext .vue src/"
