@@ -3,7 +3,7 @@
     <el-form-item class="login-animation1" prop="username">
       <el-input
           type="text"
-          :placeholder="$t('message.account.accountPlaceholder1')"
+          placeholder="请输入账号"
           v-model="ruleForm.username"
           clearable autocomplete="off">
         <template #prefix>
@@ -14,7 +14,7 @@
     <el-form-item class="login-animation2" prop="password">
       <el-input
           :type="isShowPassword ? 'text' : 'password'"
-          :placeholder="$t('message.account.accountPlaceholder2')"
+          placeholder="请输入密码"
           v-model="ruleForm.password"
           autocomplete="off"
           @keyup.enter="onSignIn"
@@ -105,8 +105,8 @@ export default defineComponent({
 		const state = reactive({
 			isShowPassword: false,
 			ruleForm: {
-        username: 'demo',
-				password: '123456',
+        username: '',
+				password: '',
         verifyCode: '',
         verifyKey:''
 			},
@@ -117,7 +117,7 @@ export default defineComponent({
         password: [
           { required: true, trigger: "blur", message: "密码不能为空" }
         ],
-        verifyCode: [{ required: true, trigger: "blur", message: "验证码不能为空" }]
+        // verifyCode: [{ required: true, trigger: "blur", message: "验证码不能为空" }]
       },
 			loading: {
 				signIn: false,
@@ -125,7 +125,7 @@ export default defineComponent({
       captchaSrc:'',
 		});
     onMounted(() => {
-      getCaptcha();
+      // getCaptcha();
     });
     const getCaptcha = () => {
       captcha().then((res:any)=>{
@@ -151,7 +151,7 @@ export default defineComponent({
             const userInfo = res.data.userInfo
             userInfo.avatar = proxy.getUpFileUrl(userInfo.avatar)
             // 存储 token 到浏览器缓存
-            Session.set('token', res.data.token);
+            console.log(res)
             // 存储用户信息到浏览器缓存
             Session.set('userInfo', userInfo);
             // 设置用户菜单
@@ -173,7 +173,7 @@ export default defineComponent({
             }
           }).catch(()=>{
             state.loading.signIn = false;
-            getCaptcha();
+            // getCaptcha();
           })
         }
       })

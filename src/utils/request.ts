@@ -36,6 +36,10 @@ service.interceptors.response.use(
 		// 对响应数据做点什么
 		const res = response.data;
 		const code = response.data.code
+
+		if (response.headers["x-jwt-token"]){
+			Session.set("token", response.headers["x-jwt-token"])
+		}
 		if (code === 401) {
 			ElMessageBox.alert('登录状态已过期，请重新登录', '提示', {confirmButtonText:'确定'})
 				.then(() => {
@@ -44,8 +48,9 @@ service.interceptors.response.use(
 				})
 				.catch(() => {});
 		} else if (code !== 0) {
-			ElMessage.error(res.message)
-			return Promise.reject(new Error(res.message))
+			
+			ElMessage.error(res.msg)
+			return Promise.reject(new Error(res.msg))
 		} else {
 			return res
 		}

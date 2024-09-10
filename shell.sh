@@ -1,11 +1,15 @@
 #!/bin/bash
 
-echo 'remote starting...'
+# echo 'remote starting...'
 
-git add .
+# git add .
 
-git commit -m 'commit'
+# git commit -m 'commit'
 
-git push prod master
+# git push prod master
 
-echo 'done'
+# echo 'done'
+
+npm run build
+
+scp -r ./dist/* root@101.200.184.27:/www/wwwroot/admin

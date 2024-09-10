@@ -2,7 +2,7 @@ import request from '/@/utils/request';
 
 export function getRoleList(query:Object) {
     return request({
-        url: '/api/v1/system/role/list',
+        url: '/role/list',
         method: 'get',
         params:query
     })
@@ -10,14 +10,14 @@ export function getRoleList(query:Object) {
 
 export function getRoleParams() {
     return request({
-        url: '/api/v1/system/role/getParams',
+        url: '/role/getParams',
         method: 'get'
     })
 }
 
 export function addRole(data:object) {
     return request({
-        url: '/api/v1/system/role/add',
+        url: '/role/add',
         method: 'post',
         data:data
     })
@@ -25,7 +25,7 @@ export function addRole(data:object) {
 
 export function getRole(id:number) {
     return request({
-        url: '/api/v1/system/role/get',
+        url: '/role/get',
         method: 'get',
         params:{id}
     })
@@ -34,7 +34,7 @@ export function getRole(id:number) {
 
 export function editRole(data:object) {
     return request({
-        url: '/api/v1/system/role/edit',
+        url: '/role/edit',
         method: 'put',
         data:data
     })
@@ -43,7 +43,7 @@ export function editRole(data:object) {
 
 export function deleteRole(id:number) {
     return request({
-        url: '/api/v1/system/role/delete',
+        url: '/role/delete',
         method: 'delete',
         data:{ids:[id]}
     })
@@ -51,7 +51,7 @@ export function deleteRole(id:number) {
 
 export function dataScope(data:any) {
     return request({
-        url: '/api/v1/system/role/dataScope',
+        url: '/role/dataScope',
         method: 'put',
         data:data
     })
@@ -61,7 +61,7 @@ export function dataScope(data:any) {
 // 根据角色ID查询部门树结构
 export function roleDeptTreeSelect(roleId:number) {
     return request({
-        url: '/api/v1/system/role/deptTreeSelect',
+        url: '/role/deptTreeSelect',
         method: 'get',
         params:{roleId}
     })
