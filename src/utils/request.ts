@@ -47,8 +47,7 @@ service.interceptors.response.use(
 					window.location.href = '/'; // 去登录页
 				})
 				.catch(() => {});
-		} else if (code !== 0) {
-			
+		} else if (code === 5) {
 			ElMessage.error(res.msg)
 			return Promise.reject(new Error(res.msg))
 		} else {

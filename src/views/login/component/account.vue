@@ -32,36 +32,36 @@
         </template>
       </el-input>
     </el-form-item>
-    <el-form-item class="login-animation3" prop="verifyCode">
-      <el-col :span="15">
-        <el-input
-            type="text"
-            maxlength="4"
-            :placeholder="$t('message.account.accountPlaceholder3')"
-            v-model="ruleForm.verifyCode"
-            clearable
-            autocomplete="off"
-            @keyup.enter="onSignIn"
-        >
-          <template #prefix>
-            <el-icon class="el-input__icon"><ele-Position /></el-icon>
-          </template>
-        </el-input>
-      </el-col>
-      <el-col :span="1"></el-col>
-      <el-col :span="8">
-        <div class="login-content-code">
-          <img
-              class="login-content-code-img"
-              @click="getCaptcha"
-              width="130"
-              height="38"
-              :src="captchaSrc"
-              style="cursor: pointer"
-          />
-        </div>
-      </el-col>
-    </el-form-item>
+<!--    <el-form-item class="login-animation3" prop="verifyCode">-->
+<!--      <el-col :span="15">-->
+<!--        <el-input-->
+<!--            type="text"-->
+<!--            maxlength="4"-->
+<!--            :placeholder="$t('message.account.accountPlaceholder3')"-->
+<!--            v-model="ruleForm.verifyCode"-->
+<!--            clearable-->
+<!--            autocomplete="off"-->
+<!--            @keyup.enter="onSignIn"-->
+<!--        >-->
+<!--          <template #prefix>-->
+<!--            <el-icon class="el-input__icon"><ele-Position /></el-icon>-->
+<!--          </template>-->
+<!--        </el-input>-->
+<!--      </el-col>-->
+<!--      <el-col :span="1"></el-col>-->
+<!--      <el-col :span="8">-->
+<!--        <div class="login-content-code">-->
+<!--          <img-->
+<!--              class="login-content-code-img"-->
+<!--              @click="getCaptcha"-->
+<!--              width="130"-->
+<!--              height="38"-->
+<!--              :src="captchaSrc"-->
+<!--              style="cursor: pointer"-->
+<!--          />-->
+<!--        </div>-->
+<!--      </el-col>-->
+<!--    </el-form-item>-->
     <el-form-item class="login-animation4">
       <el-button type="primary" class="login-content-submit" round @click="onSignIn" :loading="loading.signIn">
         <span>{{ $t('message.account.accountBtnText') }}</span>
@@ -148,28 +148,31 @@ export default defineComponent({
         if(valid){
           state.loading.signIn = true;
           login(state.ruleForm).then(async (res:any)=>{
-            const userInfo = res.data.userInfo
-            userInfo.avatar = proxy.getUpFileUrl(userInfo.avatar)
-            // 存储 token 到浏览器缓存
-            console.log(res)
-            // 存储用户信息到浏览器缓存
-            Session.set('userInfo', userInfo);
-            // 设置用户菜单
-            Session.set('userMenu',res.data.menuList)
-            // 设置按钮权限
-            Session.set('permissions',res.data.permissions)
-            // 模拟数据，对接接口时，记得删除多余代码及对应依赖的引入。用于 `/src/stores/userInfo.ts` 中不同用户登录判断（模拟数据）
-            Cookies.set('username', state.ruleForm.username);
-            if (!themeConfig.value.isRequestRoutes) {
-              // 前端控制路由，2、请注意执行顺序
-              await initFrontEndControlRoutes();
-              signInSuccess();
-            } else {
-              // 模拟后端控制路由，isRequestRoutes 为 true，则开启后端控制路由
-              // 添加完动态路由，再进行 router 跳转，否则可能报错 No match found for location with path "/"
-              await initBackEndControlRoutes();
-              // 执行完 initBackEndControlRoutes，再执行 signInSuccess
-              signInSuccess();
+            try {
+              const userInfo = res.data.userInfo
+              userInfo.avatar = proxy.getUpFileUrl(userInfo.avatar)
+              // 存储用户信息到浏览器缓存
+              Session.set('userInfo', userInfo);
+              // 动态路由
+              Session.set('userMenu',res.data.menuList)
+              // 设置按钮权限
+              Session.set('permissions',res.data.permissions)
+              // 模拟数据，对接接口时，记得删除多余代码及对应依赖的引入。用于 `/src/stores/userInfo.ts` 中不同用户登录判断（模拟数据）
+              Cookies.set('username', state.ruleForm.username);
+            }catch (e){
+              ElMessage.warning('后端未返回完整信息');
+            }finally {
+              if (!themeConfig.value.isRequestRoutes) {
+                // 前端控制路由，2、请注意执行顺序
+                await initFrontEndControlRoutes();
+                signInSuccess();
+              } else {
+                // 模拟后端控制路由，isRequestRoutes 为 true，则开启后端控制路由
+                // 添加完动态路由，再进行 router 跳转，否则可能报错 No match found for location with path "/"
+                await initBackEndControlRoutes();
+                // 执行完 initBackEndControlRoutes，再执行 signInSuccess
+                signInSuccess();
+              }
             }
           }).catch(()=>{
             state.loading.signIn = false;
